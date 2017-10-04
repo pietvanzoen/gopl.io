@@ -33,6 +33,11 @@ func main() {
 			bx, by := corner(i, j)
 			cx, cy := corner(i, j+1)
 			dx, dy := corner(i+1, j+1)
+
+			if !validCorners(ax, ay, bx, by, cx, cy, dx, dy) {
+				continue
+			}
+
 			fmt.Printf("<polygon points='%g,%g %g,%g %g,%g %g,%g'/>\n",
 				ax, ay, bx, by, cx, cy, dx, dy)
 		}
@@ -57,6 +62,15 @@ func corner(i, j int) (float64, float64) {
 func f(x, y float64) float64 {
 	r := math.Hypot(x, y) // distance from (0,0)
 	return math.Sin(r) / r
+}
+
+func validCorners(corners ...float64) bool {
+	for i := 0; i < len(corners); i++ {
+		if math.IsNaN(corners[i]) {
+			return false
+		}
+	}
+	return true
 }
 
 //!-
